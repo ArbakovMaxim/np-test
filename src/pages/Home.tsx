@@ -1,8 +1,10 @@
-import { getDeliveryStatus } from "../api/Api";
+
+import { getSenderInfo, getRecipientInfo } from "../api/Api";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
 import { useState } from "react";
+
 
 const Home = () => {
   const [inputValue, setInputValue] = useState(Number);
