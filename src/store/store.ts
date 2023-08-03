@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ttnReducer from '../features/counter/counterSlice'
+import ttnReducer from '../features/ttn/ttnSlice'
 
 
 export const store = configureStore({
