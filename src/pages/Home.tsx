@@ -1,4 +1,4 @@
-import { getDeliveryStatus } from "../api/Api";
+import { getSenderInfo, getRecipientInfo } from "../api/Api";
 
 const Home = () => {
   const result: any = getDeliveryStatus("59500000458220");
