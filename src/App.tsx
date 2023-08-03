@@ -6,7 +6,7 @@ const Home = lazy(() => import("./pages/Home"));
 const ListBranches = lazy(() => import("./pages/ListBranches/ListBranches"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound/PageNotFound"));
 
-export const App = () => {
+const App = () => {
   return (
     <Suspense fallback={<h1>Loading....</h1>}>
       <Routes>
@@ -19,3 +19,5 @@ export const App = () => {
     </Suspense>
   );
 };
+
+export default App;

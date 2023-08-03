@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { constantsApi } from 'constants/constants';
+import { constantsApi } from '../constants/baseUrl';
 
 const api = axios.create({
     baseURL: constantsApi.BASE_URL,
@@ -7,15 +7,46 @@ const api = axios.create({
 
 
 // запит за ТТН
-export async function getStatusByTTN(ttnNumber) {
+export async function getDeliveryStatus(trackingNumber) {
     try {
-        const response = await api.get('/v2/documents', {
-            params: {
+        const response = await api.post(
+            'TrackingDocument/getStatusDocuments',
+            {
                 apiKey: constantsApi.KEY,
-                DocumentRefs: ttnNumber,
-                Language: 'ua',
-            },
-        });
+                modelName: 'TrackingDocument',
+                calledMethod: 'getStatusDocuments',
+                methodProperties: {
+                    Documents: [
+                        {
+                            DocumentNumber: trackingNumber,
+                        },
+                    ],
+                },
+            }
+        );
+
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Помилка запиту:', error);
+        throw error;
+    }
+}
+
+//запит за відділенями у місті
+export async function getWarehousesInCity(cityName) {
+    try {
+        const response = await api.post(
+            'Address/getWarehouses',
+            {
+                apiKey: constantsApi.KEY,
+                modelName: 'Address',
+                calledMethod: 'getWarehouses',
+                methodProperties: {
+                    CityName: cityName,
+                },
+            }
+        );
 
         console.log(response.data);
         return response.data;
@@ -26,39 +57,4 @@ export async function getStatusByTTN(ttnNumber) {
 }
 
 
-// запит за номер накладної 
-export async function getStatusByTrackingNumber(trackingNumber) {
-    try {
-        const response = await api.get('/v2/documents', {
-            params: {
-                apiKey: constantsApi.KEY,
-                DocumentRefs: trackingNumber,
-                Language: 'ua',
-            },
-        });
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Помилка запиту:', error);
-        throw error;
-    }
-}
-
-// запит отримання списку відділень
-export async function getBranchesList(cityName) {
-    try {
-        const response = await api.get('/v2/documents', {
-            params: {
-                apiKey: constantsApi.KEY,
-                Language: 'ua',
-                CityName: cityName,
-            },
-        });
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Помилка запиту:', error);
-        throw error;
-    }
-}
 
