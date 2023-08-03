@@ -36,31 +36,34 @@ const Home = () => {
             onChange={handleInputChange}
             onKeyPress={handleInputKeyPress}
           />
-          <button onClick={handleButtonClick}>Отримати значення</button>
+          <button
+            onClick={() => {
+              handleButtonClick();
+              dispatch(addNewTtn({ id: 1, ttn: 32324242422422 }));
+            }}
+          >
+            Отримати значення
+          </button>
         </div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(addNewTtn({ id: 1, ttn: 32324242422422 }))}
-        >
-          Increment
-        </button>
         <ul>
           {listTtn
             ? listTtn.map((oneTtn) => {
                 return (
                   <li key={oneTtn.id}>
-                    <p>{oneTtn.ttn}</p>
+                    <div>
+                      <p>{oneTtn.ttn}</p>
+                      <button
+                        aria-label="Decrement value"
+                        onClick={() => dispatch(removeTtn(1))}
+                      >
+                        delete
+                      </button>
+                    </div>
                   </li>
                 );
               })
             : null}
         </ul>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(removeTtn(1))}
-        >
-          Decrement
-        </button>
       </div>
     </div>
   );
