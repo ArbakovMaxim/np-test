@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 
 export interface Item {
-    id: number;
+    id: string;
     ttn: number;
 }
 
@@ -22,7 +22,7 @@ export const ttnSlice = createSlice({
         addNewTtn: (state, action: PayloadAction<Item>) => {
             state.value.push(action.payload);
         },
-        removeTtn: (state, action: PayloadAction<number>) => {
+        removeTtn: (state, action: PayloadAction<string>) => {
             state.value = state.value.filter((item) => item.id !== action.payload);
         },
     }

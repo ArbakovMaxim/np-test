@@ -3,17 +3,17 @@ import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
 import { useState } from "react";
+import { nanoid } from "nanoid";
 
 const Home = () => {
   const [inputValue, setInputValue] = useState(Number);
+  const [resultInfo, setResulInfo] = useState([]);
   const listTtn = useSelector((state: RootState) => state.ttn.value);
   const dispatch = useDispatch();
 
-  const result: any = getInfo(59500000458220);
-  console.log(result);
-
-  const handleButtonClick = () => {
-    alert(inputValue);
+  const handleButtonClick = async () => {
+    const resultSender = await getInfo(inputValue);
+    setResulInfo(resultSender.data);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +22,18 @@ const Home = () => {
 
   const handleInputKeyPress = (event: { key: string }) => {
     if (event.key === "Enter") {
-      handleButtonClick(); // Викликаємо дію, яка пов'язана з кнопкою
+      handleButtonClick();
     }
   };
+
+  console.log(resultInfo);
 
   return (
     <div>
       <div>
         <div>
           <input
-            type="text"
+            type="number"
             value={inputValue}
             onChange={handleInputChange}
             onKeyPress={handleInputKeyPress}
@@ -39,31 +41,35 @@ const Home = () => {
           <button
             onClick={() => {
               handleButtonClick();
-              dispatch(addNewTtn({ id: 1, ttn: 32324242422422 }));
+              dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
             }}
           >
             Отримати значення
           </button>
         </div>
-        <ul>
-          {listTtn
-            ? listTtn.map((oneTtn) => {
-                return (
-                  <li key={oneTtn.id}>
-                    <div>
-                      <p>{oneTtn.ttn}</p>
-                      <button
-                        aria-label="Decrement value"
-                        onClick={() => dispatch(removeTtn(1))}
-                      >
-                        delete
-                      </button>
-                    </div>
-                  </li>
-                );
-              })
-            : null}
-        </ul>
+        <div>
+          {resultInfo.length !== 0 ? <div></div> : <div></div>}
+
+          <ul>
+            {listTtn
+              ? listTtn.map((oneTtn) => {
+                  return (
+                    <li key={oneTtn.id}>
+                      <div>
+                        <p>{oneTtn.ttn}</p>
+                        <button
+                          aria-label="Decrement value"
+                          onClick={() => dispatch(removeTtn(oneTtn.id))}
+                        >
+                          delete
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })
+              : null}
+          </ul>
+        </div>
       </div>
     </div>
   );
