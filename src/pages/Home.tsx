@@ -1,17 +1,15 @@
-
-import { getSenderInfo, getRecipientInfo } from "../api/Api";
+import { getInfo } from "../api/Api";
 import type { RootState } from "../store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
 import { useState } from "react";
-
 
 const Home = () => {
   const [inputValue, setInputValue] = useState(Number);
   const listTtn = useSelector((state: RootState) => state.ttn.value);
   const dispatch = useDispatch();
 
-  const result: any = getDeliveryStatus(59500000458220);
+  const result: any = getInfo(59500000458220);
   console.log(result);
 
   const handleButtonClick = () => {
