@@ -7,17 +7,21 @@ const api = axios.create({
 
 
 // запит за ТТН
-export async function getSenderInfo(trackingNumber) {
+export async function getInfo(trackingNumber) {
     try {
         const response = await api.post(
-            'TrackingDocument/getDocumentList',
+            'TrackingDocument/getStatusDocuments',
             {
                 apiKey: constantsApi.KEY,
                 modelName: 'TrackingDocument',
-                calledMethod: 'getDocumentList',
+                calledMethod: 'getStatusDocuments',
                 methodProperties: {
-                    DocumentNumber: trackingNumber,
-                },
+                    Documents: [
+                        {
+                            DocumentNumber: trackingNumber,
+                        },
+                    ],
+                }
             }
         );
         return response.data;
@@ -26,27 +30,6 @@ export async function getSenderInfo(trackingNumber) {
         throw error;
     }
 }
-
-export async function getRecipientInfo(trackingNumber) {
-    try {
-        const response = await api.post(
-            'TrackingDocument/getDocumentDeliveryDate',
-            {
-                apiKey: constantsApi.KEY,
-                modelName: 'TrackingDocument',
-                calledMethod: 'getDocumentDeliveryDate',
-                methodProperties: {
-                    DocumentNumber: trackingNumber,
-                },
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error('Помилка запиту:', error);
-        throw error;
-    }
-}
-
 
 
 //запит за відділенями у місті
