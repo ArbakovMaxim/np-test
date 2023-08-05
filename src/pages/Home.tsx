@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInfo } from "../api/Api";
 import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
 import type { RootState } from "../store/store";
+import { StatusInfo } from "../components/statusInfo/StatusInfo";
 
 interface DeliveryInfo {
   RecipientDateTime: string;
@@ -26,8 +27,11 @@ const Home = () => {
   //20450747562015
   //20450749076473
 
-  //идет
+  //на почте
   //20450751556289
+
+  //идет
+  //20450751777995
 
   // проверка input
   const isValidInput = (inputValue: string): boolean => {
@@ -87,34 +91,7 @@ const Home = () => {
         </div>
         <div>
           {resultInfo.length !== 0 ? (
-            <>
-              <div>
-                <p>Статус</p>
-                <div>{resultInfo[0].Status}</div>
-              </div>
-              <div>
-                <div>
-                  <p>Место отправки</p>
-                  <p>{resultInfo[0].CitySender}</p>
-                  <p>{resultInfo[0].WarehouseSender}</p>
-                </div>
-                <div>
-                  <p>Время отправления</p>
-                  <p>{resultInfo[0].ActualDeliveryDate}</p>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <p>Место получения</p>
-                  <p>{resultInfo[0].CityRecipient}</p>
-                  <p>{resultInfo[0].WarehouseRecipient}</p>
-                </div>
-                <div>
-                  <p>Время получения</p>
-                  <div>{resultInfo[0].RecipientDateTime}</div>
-                </div>
-              </div>
-            </>
+            <StatusInfo resultInfo={resultInfo} />
           ) : (
             <div></div>
           )}

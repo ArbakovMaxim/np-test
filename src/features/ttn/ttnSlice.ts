@@ -20,6 +20,10 @@ export const ttnSlice = createSlice({
     initialState,
     reducers: {
         addNewTtn: (state, action: PayloadAction<Item>) => {
+            const ttnExists = state.value.some((item) => item.ttn === action.payload.ttn);
+            if (ttnExists) {
+                return;
+            }
             state.value.push(action.payload);
         },
         removeTtn: (state, action: PayloadAction<string>) => {
