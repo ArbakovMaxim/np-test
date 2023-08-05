@@ -4,7 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface Item {
     id: string;
-    ttn: number;
+    ttn: string;
 }
 
 export interface TtnState {
