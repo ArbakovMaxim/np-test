@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { getInfo } from "../api/Api";
 import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
 import type { RootState } from "../store/store";
@@ -11,6 +12,15 @@ import Box from "@mui/material/Box";
 import BoxImg from "../image/BoxImg.jpg";
 import { Search } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import FolderIcon from "@mui/icons-material/Folder";
+import ListItemText from "@mui/material/ListItemText";
+import { Grid } from "@mui/material";
 
 interface DeliveryInfo {
   RecipientDateTime: string;
@@ -24,6 +34,7 @@ interface DeliveryInfo {
 
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState(false);
   const [resultInfo, setResulInfo] = useState<DeliveryInfo[]>([]);
   const listTtn = useSelector((state: RootState) => state.ttn.value);
   const dispatch = useDispatch();
@@ -32,6 +43,13 @@ const Home = () => {
   //59000999927493
   //20450747562015
   //20450749076473
+  //59000918754147
+  //20450657036270
+  //20450663947978
+  //20450668981671
+  //20450698211297
+  //59000960855820
+  //20450718201035
 
   //на почте
   //20450751556289
@@ -59,24 +77,27 @@ const Home = () => {
     if (isValidInput(inputValue.toString())) {
       const resultSender = await getInfo(inputValue);
       setResulInfo(resultSender.data);
+      dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
     } else {
-      console.log("Ошибочка однако");
+      toast.error("Невірно введений номер");
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
+    const newValue = event.target.value;
 
-  console.log(resultInfo);
+    if (!/^\d*$/.test(newValue)) {
+      setError(true);
+    } else {
+      setError(false);
+      setInputValue(newValue);
+    }
+  };
 
   return (
     <Box component="section" sx={{ pt: "24px", pb: "24px" }}>
       <Container fixed>
-        <Box
-          component="div"
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
+        <Box component="div" sx={{ display: "flex" }}>
           <div>
             <Box
               component="div"
@@ -93,14 +114,18 @@ const Home = () => {
                 id="standard-basic"
                 label="Введіть номер"
                 variant="standard"
-                type="Number"
                 value={inputValue}
                 onChange={handleInputChange}
+                error={error}
+                helperText={error ? "Введите только цифры" : ""}
                 sx={{
                   position: "absolute",
                   top: "50%",
                   left: "30%",
                   transform: "translate(-50%, -50%)",
+                }}
+                inputProps={{
+                  pattern: "[0-9]*",
                 }}
               />
               <IconButton
@@ -112,7 +137,6 @@ const Home = () => {
                 }}
                 onClick={() => {
                   handleButtonClick();
-                  dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
                 }}
               >
                 <Search />
@@ -121,34 +145,57 @@ const Home = () => {
             <div>
               {resultInfo.length !== 0 ? (
                 <StatusInfo resultInfo={resultInfo} />
-              ) : (
-                <div></div>
-              )}
+              ) : null}
             </div>
           </div>
-          <div>
-            <ul>
-              {listTtn
-                ? listTtn.map((oneTtn) => {
-                    return (
-                      <li key={oneTtn.id}>
-                        <div>
-                          <p onClick={() => handleItemClick(oneTtn.ttn)}>
-                            {oneTtn.ttn}
-                          </p>
-                          <button
-                            aria-label="Decrement value"
-                            onClick={() => dispatch(removeTtn(oneTtn.id))}
+          <Box
+            component="div"
+            sx={{
+              pl: "25px",
+              pr: "25px",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+          >
+            <List sx={{ margin: "-20px" }}>
+              <Grid container spacing={2}>
+                {listTtn
+                  ? listTtn.map((oneTtn) => {
+                      return (
+                        <Grid item xs={6} key={oneTtn.id}>
+                          <ListItem
+                            sx={{
+                              margin: "15px",
+                              padding: "20px",
+                              backgroundColor: "red",
+                              width: "280px",
+                            }}
+                            key={oneTtn.id}
                           >
-                            delete
-                          </button>
-                        </div>
-                      </li>
-                    );
-                  })
-                : null}
-            </ul>
-          </div>
+                            <ListItemAvatar>
+                              <Avatar sx={{ mr: "25px" }}>
+                                <FolderIcon />
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={oneTtn.ttn}
+                              onClick={() => handleItemClick(oneTtn.ttn)}
+                              sx={{ cursor: "pointer" }}
+                            />
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => dispatch(removeTtn(oneTtn.id))}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItem>
+                        </Grid>
+                      );
+                    })
+                  : null}
+              </Grid>
+            </List>
+          </Box>
         </Box>
       </Container>
     </Box>
