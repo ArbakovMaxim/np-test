@@ -3,8 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 
 export interface Item {
-    id: number;
-    ttn: number;
+    id: string;
+    ttn: string;
 }
 
 export interface TtnState {
@@ -20,9 +20,13 @@ export const ttnSlice = createSlice({
     initialState,
     reducers: {
         addNewTtn: (state, action: PayloadAction<Item>) => {
+            const ttnExists = state.value.some((item) => item.ttn === action.payload.ttn);
+            if (ttnExists) {
+                return;
+            }
             state.value.push(action.payload);
         },
-        removeTtn: (state, action: PayloadAction<number>) => {
+        removeTtn: (state, action: PayloadAction<string>) => {
             state.value = state.value.filter((item) => item.id !== action.payload);
         },
     }
