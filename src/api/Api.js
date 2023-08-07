@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { constantsApi } from '../constants/baseUrl';
+import { toast } from 'react-toastify';
 
 const api = axios.create({
     baseURL: constantsApi.BASE_URL,
@@ -26,7 +27,7 @@ export async function getInfo(trackingNumber) {
         );
         return response.data;
     } catch (error) {
-        console.error('Помилка запиту:', error);
+        toast.error('Помилка запиту:', error);
         throw error;
     }
 }
@@ -46,11 +47,31 @@ export async function getWarehousesInCity(cityName) {
                 },
             }
         );
-
-        console.log(response.data);
         return response.data;
     } catch (error) {
-        console.error('Помилка запиту:', error);
+        toast.error('Помилка запиту:', error);
+        throw error;
+    }
+}
+
+export async function getWarehousesInCityPage(cityName, page, itemsPerPage) {
+    try {
+        const response = await api.post(
+            'Address/getWarehouses',
+            {
+                apiKey: constantsApi.KEY,
+                modelName: 'Address',
+                calledMethod: 'getWarehouses',
+                methodProperties: {
+                    CityName: cityName,
+                    Limit: itemsPerPage,
+                    Page: page,
+                },
+            }
+        );
+        return response.data;
+    } catch (error) {
+        toast.error('Помилка запиту:', error);
         throw error;
     }
 }

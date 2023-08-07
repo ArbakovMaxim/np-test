@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const styles = {
   textDecoration: "none",
@@ -17,14 +17,20 @@ const styles = {
 };
 
 export const Header = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const location = useLocation();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    handleClose();
+  }, [location.pathname]);
 
   return (
     <Box component="section" sx={{ backgroundColor: "#ff3d3b" }}>
@@ -53,7 +59,6 @@ export const Header = () => {
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
                 MenuListProps={{
                   "aria-labelledby": "basic-button",
                 }}
@@ -74,7 +79,9 @@ export const Header = () => {
                 </MenuItem>
               </Menu>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Де посилка
+                <NavLink to="/" style={styles}>
+                  Де посилка
+                </NavLink>
               </Typography>
             </Toolbar>
           </AppBar>

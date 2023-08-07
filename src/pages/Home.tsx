@@ -109,8 +109,6 @@ const Home = () => {
     setMenuTtn(null);
   };
 
-  console.log(listTtn);
-
   return (
     <Box component="section" sx={{ pt: "24px", pb: "24px" }}>
       <Container fixed>
