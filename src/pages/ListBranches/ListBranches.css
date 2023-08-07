@@ -19,5 +19,5 @@
 .itemInfoCity {
   flex: 1 0 calc(33.33% - 10px);
   margin: 5px;
-  min-height: 320px;
+  min-height: 360px;
 }

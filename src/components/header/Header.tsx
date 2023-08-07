@@ -79,7 +79,9 @@ export const Header = () => {
                 </MenuItem>
               </Menu>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Де посилка
+                <NavLink to="/" style={styles}>
+                  Де посилка
+                </NavLink>
               </Typography>
             </Toolbar>
           </AppBar>
