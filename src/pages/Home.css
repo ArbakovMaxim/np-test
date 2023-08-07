@@ -1,0 +1,62 @@
+.homePage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.homePage__input {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.homePage__input--img {
+  background-image: url(../image/BoxImg.jpg);
+  width: 288px;
+  height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.homePage__wrapper__listTtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 25px;
+  margin-top: 25px;
+  @media (max-width: 524px) {
+    margin-top: 10px;
+  }
+}
+
+.homePage__button--listTtn {
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: auto !important;
+}
+
+.homePage__button--listTtn .MuiButton-startIcon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.homePage__button--listTtn .MuiSvgIcon-root {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.homePage__mobList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 200px;
+}

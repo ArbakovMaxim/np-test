@@ -1,26 +1,27 @@
+import React from "react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getInfo } from "../api/Api";
-import { addNewTtn, removeTtn } from "../features/ttn/ttnSlice";
-import type { RootState } from "../store/store";
+import { addNewTtn } from "../features/ttn/ttnSlice";
 import { StatusInfo } from "../components/statusInfo/StatusInfo";
-import TextField from "@mui/material/TextField";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import BoxImg from "../image/BoxImg.jpg";
 import { Search } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
+import "./Home.css";
+import ListIcon from "@mui/icons-material/List";
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import FolderIcon from "@mui/icons-material/Folder";
-import ListItemText from "@mui/material/ListItemText";
-import { Grid } from "@mui/material";
+import {
+  useMediaQuery,
+  IconButton,
+  Box,
+  Container,
+  TextField,
+  Button,
+  Menu,
+} from "@mui/material";
+
+import { ListTtn } from "../components/listTTN/ListTtn";
+import { RootState } from "../store/store";
 
 interface DeliveryInfo {
   RecipientDateTime: string;
@@ -34,10 +35,14 @@ interface DeliveryInfo {
 
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
+  const [menuTtn, setMenuTtn] = React.useState<null | HTMLElement>(null);
   const [error, setError] = useState(false);
   const [resultInfo, setResulInfo] = useState<DeliveryInfo[]>([]);
   const listTtn = useSelector((state: RootState) => state.ttn.value);
   const dispatch = useDispatch();
+
+  const isMob = useMediaQuery("(max-width: 524px)");
+  const isTableMax = useMediaQuery("(max-width: 899px)");
 
   //59500000458220
   //59000999927493
@@ -83,6 +88,7 @@ const Home = () => {
     }
   };
 
+  //инпут + валидация
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
 
@@ -94,21 +100,36 @@ const Home = () => {
     }
   };
 
+  //функций меню с ттн
+  const open = Boolean(menuTtn);
+  const handleInMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuTtn(event.currentTarget);
+  };
+  const handleClose = () => {
+    setMenuTtn(null);
+  };
+
+  console.log(listTtn);
+
   return (
     <Box component="section" sx={{ pt: "24px", pb: "24px" }}>
       <Container fixed>
-        <Box component="div" sx={{ display: "flex" }}>
-          <div>
+        <Box component="div" sx={{ display: "flex", position: "relative" }}>
+          <Box component="div" className={isMob ? "homePage__wrapper" : ""}>
             <Box
               component="div"
-              sx={{
-                backgroundImage: `url(${BoxImg})`,
-                width: "500px",
-                height: "300px",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                position: "relative",
-              }}
+              className="homePage__input--img"
+              sx={
+                isMob
+                  ? {
+                      width: "288px",
+                      height: "200px",
+                    }
+                  : {
+                      width: "500px",
+                      height: "300px",
+                    }
+              }
             >
               <TextField
                 id="standard-basic"
@@ -118,23 +139,37 @@ const Home = () => {
                 onChange={handleInputChange}
                 error={error}
                 helperText={error ? "Введите только цифры" : ""}
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "30%",
-                  transform: "translate(-50%, -50%)",
-                }}
+                className="homePage__input"
+                sx={
+                  isMob
+                    ? {
+                        left: "40%",
+                        width: "150px",
+                      }
+                    : {
+                        left: "30%",
+                      }
+                }
                 inputProps={{
                   pattern: "[0-9]*",
                 }}
               />
               <IconButton
-                sx={{
-                  position: "absolute",
-                  top: "53%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }}
+                sx={
+                  isMob
+                    ? {
+                        position: "absolute",
+                        top: "54%",
+                        left: "63%",
+                        transform: "translate(-50%, -50%)",
+                      }
+                    : {
+                        position: "absolute",
+                        top: "53%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }
+                }
                 onClick={() => {
                   handleButtonClick();
                 }}
@@ -145,57 +180,45 @@ const Home = () => {
             <div>
               {resultInfo.length !== 0 ? (
                 <StatusInfo resultInfo={resultInfo} />
-              ) : null}
+              ) : (
+                <Box component="div" sx={{ minHeight: "360px" }} />
+              )}
             </div>
-          </div>
-          <Box
-            component="div"
-            sx={{
-              pl: "25px",
-              pr: "25px",
-              maxHeight: "80vh",
-              overflowY: "auto",
-            }}
-          >
-            <List sx={{ margin: "-20px" }}>
-              <Grid container spacing={2}>
-                {listTtn
-                  ? listTtn.map((oneTtn) => {
-                      return (
-                        <Grid item xs={6} key={oneTtn.id}>
-                          <ListItem
-                            sx={{
-                              margin: "15px",
-                              padding: "20px",
-                              backgroundColor: "red",
-                              width: "280px",
-                            }}
-                            key={oneTtn.id}
-                          >
-                            <ListItemAvatar>
-                              <Avatar sx={{ mr: "25px" }}>
-                                <FolderIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary={oneTtn.ttn}
-                              onClick={() => handleItemClick(oneTtn.ttn)}
-                              sx={{ cursor: "pointer" }}
-                            />
-                            <IconButton
-                              aria-label="delete"
-                              onClick={() => dispatch(removeTtn(oneTtn.id))}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItem>
-                        </Grid>
-                      );
-                    })
-                  : null}
-              </Grid>
-            </List>
           </Box>
+          {isTableMax ? (
+            <Box component="div" className="homePage__wrapper__listTtn">
+              <Button
+                aria-controls={open ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                onClick={handleInMenuClick}
+                variant="contained"
+                startIcon={<ListIcon />}
+                className="homePage__button--listTtn"
+              ></Button>
+              <Menu
+                id="menu"
+                anchorEl={menuTtn}
+                open={Boolean(menuTtn)}
+                onClose={handleClose}
+              >
+                {listTtn.length !== 0 ? (
+                  <ListTtn
+                    handleItemClick={handleItemClick}
+                    handleClose={handleClose}
+                  />
+                ) : (
+                  <Box component="div" className="homePage__mobList">
+                    Ще не має посилок
+                  </Box>
+                )}
+              </Menu>
+            </Box>
+          ) : (
+            <ListTtn
+              handleItemClick={handleItemClick}
+              handleClose={handleClose}
+            />
+          )}
         </Box>
       </Container>
     </Box>

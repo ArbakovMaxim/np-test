@@ -24,11 +24,14 @@ const bull = (
 
 export const StatusInfo = ({ resultInfo }: Props) => {
   return (
-    <Box component="div" sx={{ maxWidth: "500px", mt: "25px" }}>
+    <Box
+      component="div"
+      sx={{ maxWidth: "500px", mt: "25px", minHeight: "360px" }}
+    >
       <Typography sx={{ fontSize: 18 }} variant="subtitle1">
         Статус: <span style={{ color: "green" }}>{resultInfo[0].Status}</span>
       </Typography>
-      <CardContent sx={{ backgroundColor: "red", mt: "25px" }}>
+      <CardContent sx={{ backgroundColor: "#ff3d3b", mt: "25px" }}>
         <Typography variant="h5" component="div"></Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Місто відправник:
@@ -46,7 +49,7 @@ export const StatusInfo = ({ resultInfo }: Props) => {
         ) : null}
       </CardContent>
 
-      <CardContent sx={{ backgroundColor: "red", mt: "25px" }}>
+      <CardContent sx={{ backgroundColor: "#ff3d3b", mt: "25px" }}>
         <Typography variant="h5" component="div"></Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           Місто отримання: {bull}
@@ -62,41 +65,6 @@ export const StatusInfo = ({ resultInfo }: Props) => {
           </Typography>
         ) : null}
       </CardContent>
-      {/* <Box component="div" sx={{ mt: "25px" }}>
-        <Typography variant="h5">
-          Статус: <span>{resultInfo[0].Status}</span>
-        </Typography>
-      </Box>
-      <Box component="div" sx={{ padding: "20px", backgroundColor: "" }}>
-        <div>
-          <Typography variant="body1" color="primary">
-            Місто відправник: <span>{resultInfo[0].CitySender}</span>
-          </Typography>
-          <Typography variant="body1" color="primary">
-            Адреса відділення: <span>{resultInfo[0].WarehouseSender}</span>
-          </Typography>
-        </div>
-        {resultInfo[0].ActualDeliveryDate !== "" ? (
-          <div>
-            <p>Час відправлення: {resultInfo[0].ActualDeliveryDate} </p>
-          </div>
-        ) : null}
-      </Box>
-      <Box component="div" sx={{ padding: "20px" }}>
-        <div>
-          <Typography variant="body1" color="primary">
-            Місто отримання: <span>{resultInfo[0].CityRecipient}</span>
-          </Typography>
-          <Typography variant="body1" color="primary">
-            Адреса відділення: <span>{resultInfo[0].WarehouseRecipient}</span>
-          </Typography>
-        </div>
-        {resultInfo[0].RecipientDateTime !== "" ? (
-          <div>
-            <p>Час отримання: {resultInfo[0].RecipientDateTime}</p>
-          </div>
-        ) : null}
-      </Box> */}
     </Box>
   );
 };
