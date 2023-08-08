@@ -12,10 +12,20 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Item, addNewTtn } from "./features/ttn/ttnSlice";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const ttnData = localStorage.getItem("ttnData");
+if (ttnData) {
+  const parsedTtnData = JSON.parse(ttnData);
+  parsedTtnData.forEach((item: Item) => {
+    store.dispatch(addNewTtn(item));
+  });
+}
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { Middleware } from '@reduxjs/toolkit';
 
 
 export interface Item {
@@ -31,6 +32,15 @@ export const ttnSlice = createSlice({
         },
     }
 })
+
+export const ttnLocalStorageMiddleware: Middleware = (store) => (next) => (action) => {
+    let result = next(action);
+    if (action.type === addNewTtn.type || action.type === removeTtn.type) {
+        const state = store.getState();
+        localStorage.setItem('ttnData', JSON.stringify(state.ttn.value));
+    }
+    return result;
+};
 
 export const { addNewTtn, removeTtn } = ttnSlice.actions
 
