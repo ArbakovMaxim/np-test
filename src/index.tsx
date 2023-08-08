@@ -28,7 +28,7 @@ if (ttnData) {
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/np-test">
       <Provider store={store}>
         <App />
         <ToastContainer autoClose={2000} />
