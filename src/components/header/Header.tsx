@@ -1,37 +1,22 @@
-import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { Button } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const styles = {
   textDecoration: "none",
   color: "inherit",
   cursor: "pointer",
+  padding: "0",
 };
 
 export const Header = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const location = useLocation();
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  useEffect(() => {
-    handleClose();
-  }, [location.pathname]);
-
   return (
     <Box component="section" sx={{ backgroundColor: "#ff3d3b" }}>
       <Container fixed>
@@ -41,43 +26,22 @@ export const Header = () => {
             sx={{ backgroundColor: "#ff3d3b", boxShadow: 0 }}
           >
             <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
+              <Button
+                component={RouterLink}
+                to="/"
                 color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                sx={{ padding: "0" }}
               >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
+                <AssignmentIcon />
+              </Button>
+              <Button
+                component={RouterLink}
+                to="/ListBranches"
+                color="inherit"
+                sx={{ padding: "0" }}
               >
-                <MenuItem>
-                  <NavLink onClick={handleClose} to="/" style={styles}>
-                    Посилки
-                  </NavLink>
-                </MenuItem>
-                <MenuItem>
-                  <NavLink
-                    onClick={handleClose}
-                    to="/ListBranches"
-                    style={styles}
-                  >
-                    Відділення
-                  </NavLink>
-                </MenuItem>
-              </Menu>
+                <LocationOnIcon />
+              </Button>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 <NavLink to="/" style={styles}>
                   Де посилка

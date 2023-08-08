@@ -38,7 +38,7 @@ const ListBranches = () => {
 
   const isMob = useMediaQuery("(max-width: 524px)");
 
-  const itemsPerPage = 20;
+  const itemsPerPage = isMob ? 9 : 21;
 
   const handlePaginationChange = (event: any, page: SetStateAction<number>) => {
     setCurrentPage(page);
@@ -69,7 +69,7 @@ const ListBranches = () => {
   const handleButtonClick = async () => {
     const resultSender = await getWarehousesInCity(inputValue);
     if (resultSender.data.length > 0) {
-      setResult(resultSender.data.slice(0, 20));
+      setResult(resultSender.data.slice(0, isMob ? 9 : 21));
       setPageTotalItems(resultSender.data.length);
       toast.success(`Знайденно ${resultSender.data.length} відділень`);
     } else {
