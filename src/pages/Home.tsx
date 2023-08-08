@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,19 +74,37 @@ const Home = () => {
   ///Обработка клика по списку ТТН
   const handleItemClick = (ttn: string) => {
     setInputValue(ttn);
-    handleButtonClick();
+    // handleButtonClick();
   };
 
   //запрос по ТТН или Накладной
-  const handleButtonClick = async () => {
+  useEffect(() => {
     if (isValidInput(inputValue.toString())) {
-      const resultSender = await getInfo(inputValue);
-      setResulInfo(resultSender.data);
-      dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
-    } else {
-      toast.error("Невірно введений номер");
+      const fetchData = async () => {
+        try {
+          const resultSender = await getInfo(inputValue);
+          if (resultSender.data.length > 0) {
+            setResulInfo(resultSender.data);
+            dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
+          } else {
+            toast.error("Не має такой посилки");
+          }
+        } catch (error) {
+          toast.error("Помилка запиту");
+        }
+      };
+      fetchData();
     }
-  };
+  }, [inputValue, dispatch]);
+  // const handleButtonClick = async () => {
+  //   if (isValidInput(inputValue.toString())) {
+  //     const resultSender = await getInfo(inputValue);
+  //     setResulInfo(resultSender.data);
+  //     dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
+  //   } else {
+  //     toast.error("Невірно введений номер");
+  //   }
+  // };
 
   //инпут + валидация
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,9 +186,9 @@ const Home = () => {
                         transform: "translate(-50%, -50%)",
                       }
                 }
-                onClick={() => {
-                  handleButtonClick();
-                }}
+                // onClick={() => {
+                //   handleButtonClick();
+                // }}
               >
                 <Search />
               </IconButton>
