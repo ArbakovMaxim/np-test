@@ -44,24 +44,6 @@ const Home = () => {
   const isMob = useMediaQuery("(max-width: 524px)");
   const isTableMax = useMediaQuery("(max-width: 899px)");
 
-  //59500000458220
-  //59000999927493
-  //20450747562015
-  //20450749076473
-  //59000918754147
-  //20450657036270
-  //20450663947978
-  //20450668981671
-  //20450698211297
-  //59000960855820
-  //20450718201035
-
-  //на почте
-  //20450751556289
-
-  //идет
-  //20450751777995
-
   // проверка input
   const isValidInput = (inputValue: string): boolean => {
     const onlyNumbersRegex = /^[0-9]+$/;
@@ -96,15 +78,6 @@ const Home = () => {
       fetchData();
     }
   }, [inputValue, dispatch]);
-  // const handleButtonClick = async () => {
-  //   if (isValidInput(inputValue.toString())) {
-  //     const resultSender = await getInfo(inputValue);
-  //     setResulInfo(resultSender.data);
-  //     dispatch(addNewTtn({ id: nanoid(), ttn: inputValue }));
-  //   } else {
-  //     toast.error("Невірно введений номер");
-  //   }
-  // };
 
   //инпут + валидация
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,9 +159,6 @@ const Home = () => {
                         transform: "translate(-50%, -50%)",
                       }
                 }
-                // onClick={() => {
-                //   handleButtonClick();
-                // }}
               >
                 <Search />
               </IconButton>
